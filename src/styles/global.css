@@ -144,12 +144,6 @@ p {
   letter-spacing: 0.04em;
 }
 
-.marca__nome {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .menu {
   display: none;
   gap: 4px;

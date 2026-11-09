@@ -67,7 +67,6 @@ const ano = new Date().getFullYear();
       <div class="container topo__barra">
         <a class="marca" href={inicio} aria-label="Allan Lopreti">
           <span class="marca__sigla" aria-hidden="true">AL</span>
-          <span class="marca__nome">Allan Lopreti</span>
         </a>
         <nav class="menu" aria-label={idioma === 'pt' ? 'Seções' : 'Sections'}>
           {t.menu.map(({ href, rotulo }) => <a href={`${inicio === '/' ? '' : inicio}${href}`}>{rotulo}</a>)}

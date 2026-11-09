@@ -205,8 +205,8 @@ export const conteudo: Record<Idioma, Conteudo> = {
         {
           nome: 'ledger-flow',
           descricao:
-            'Ledger transacional: lançamentos consistentes, idempotência e eventos publicados no Kafka. Um laboratório dos problemas de quem processa dinheiro.',
-          tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Liquibase', 'Kafka'],
+            'Ledger transacional com lançamentos, depósitos e transações de câmbio com taxa, além de idempotência por chave nas requisições. Um laboratório dos problemas de quem processa dinheiro.',
+          tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Liquibase', 'Testcontainers'],
           link: 'https://github.com/allanlopreti/ledger-flow',
           rotuloLink: 'Ver no GitHub',
         },
@@ -394,8 +394,8 @@ export const conteudo: Record<Idioma, Conteudo> = {
         {
           nome: 'ledger-flow',
           descricao:
-            'Transactional ledger: consistent entries, idempotency and events published to Kafka. A lab for the problems of handling money.',
-          tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Liquibase', 'Kafka'],
+            'Transactional ledger with postings, deposits and FX transactions with exchange rates, plus key-based request idempotency. A lab for the problems of handling money.',
+          tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Liquibase', 'Testcontainers'],
           link: 'https://github.com/allanlopreti/ledger-flow',
           rotuloLink: 'View on GitHub',
         },
