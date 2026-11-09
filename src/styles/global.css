@@ -131,17 +131,19 @@ p {
   text-decoration: none;
 }
 
-.marca__sigla {
-  display: grid;
-  place-items: center;
+.marca__foto {
   flex: none;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
-  background: var(--destaque);
-  color: var(--destaque-texto);
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--destaque);
+}
+
+.marca__nome {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .menu {
