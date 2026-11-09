@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx astro build
+
+  security:
+    name: Segredos e dependências
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Segredos no código (Gitleaks)
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 dir /repo --redact --no-banner
+      - name: Vulnerabilidades nas dependências (Trivy)
+        run: >
+          docker run --rm -v "$PWD:/src" -w /src aquasec/trivy:0.76.2
+          fs --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 1 .
+
+  # A chave só publica o portfólio: no servidor, o forced command fixa o alvo e recebe apenas o commit.
+  deploy:
+    name: Deploy
+    needs: [build, security]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-producao
+      cancel-in-progress: false
+    environment:
+      name: producao
+      url: https://lopreti.com.br
+    steps:
+      - name: Chave SSH do deploy
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Publica ${{ github.sha }}
+        env:
+          HOST: ${{ secrets.VPS_HOST }}
+        run: ssh -i ~/.ssh/deploy -o BatchMode=yes -o ServerAliveInterval=30 "deploy@$HOST" "${{ github.sha }}" </dev/null
+      - name: Verifica o site no ar
+        run: curl -fsS -o /dev/null --retry 3 --retry-delay 5 https://lopreti.com.br/

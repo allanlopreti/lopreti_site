@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { conteudo } from '../data/conteudo';
+
+const { naoEncontrada } = conteudo.pt;
+---
+
+<Base idioma="pt" titulo={naoEncontrada.titulo} indexar={false}>
+  <section class="secao">
+    <div class="container erro">
+      <p class="erro__codigo">404</p>
+      <h1 class="secao__titulo">{naoEncontrada.titulo}</h1>
+      <p class="secao__texto">{naoEncontrada.texto} <span lang="en">({conteudo.en.naoEncontrada.titulo})</span></p>
+      <div class="botoes">
+        <a class="botao botao--primario" href="/">{naoEncontrada.voltar}</a>
+        <a class="botao" href="/en" lang="en">{conteudo.en.naoEncontrada.voltar}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .erro {
+    text-align: center;
+  }
+
+  .erro .secao__texto {
+    margin-inline: auto;
+  }
+
+  .erro .botoes {
+    justify-content: center;
+  }
+
+  .erro__codigo {
+    color: var(--destaque);
+    font-size: clamp(4rem, 20vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+  }
+</style>
